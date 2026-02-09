@@ -1,0 +1,5 @@
+{
+  "repositoryName": "shiny-flaons-6l6fb5",
+  "adapter": "@slicemachine/adapter-next",
+  "libraries": ["./slices"]
+}

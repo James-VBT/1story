@@ -4,9 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { HiOutlineBars3, HiOutlineXMark } from "react-icons/hi2";
-import { navLinks } from "@/lib/data";
 
-export default function Header() {
+interface HeaderProps {
+  navigation: { label: string; href: string }[];
+  siteTitle: string;
+  siteTagline: string;
+}
+
+export default function Header({ navigation, siteTitle, siteTagline }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
 
@@ -23,16 +28,16 @@ export default function Header() {
           {/* Brand */}
           <Link href="/" className="flex-shrink-0">
             <span className="font-heading uppercase tracking-[0.15em] text-lg font-extrabold text-foreground block leading-tight">
-              Allan Johnson
+              {siteTitle}
             </span>
             <span className="text-xs text-gray-medium tracking-wider uppercase">
-              Personal Life Coach
+              {siteTagline}
             </span>
           </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
+            {navigation.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -69,7 +74,7 @@ export default function Header() {
         }`}
       >
         <nav className="bg-white border-t border-gray-100 px-4 py-4 space-y-1">
-          {navLinks.map((link) => (
+          {navigation.map((link) => (
             <Link
               key={link.href}
               href={link.href}

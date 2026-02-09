@@ -1,0 +1,52 @@
+{
+  "id": "services_preview",
+  "type": "SharedSlice",
+  "name": "ServicesPreview",
+  "description": "Preview grid of featured services with CTA",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "Services"
+          }
+        },
+        "subtitle": {
+          "type": "Text",
+          "config": {
+            "label": "Subtitle"
+          }
+        },
+        "max_services": {
+          "type": "Number",
+          "config": {
+            "label": "Max Services to Show"
+          }
+        },
+        "cta_text": {
+          "type": "Text",
+          "config": {
+            "label": "CTA Text",
+            "placeholder": "More Services"
+          }
+        },
+        "cta_link": {
+          "type": "Text",
+          "config": {
+            "label": "CTA Link",
+            "placeholder": "/book-now"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

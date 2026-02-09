@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Raleway } from "next/font/google";
+import { PrismicPreview } from "@prismicio/next";
+import { createClient, repositoryName } from "@/prismicio";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import "./globals.css";
@@ -20,25 +22,63 @@ const raleway = Raleway({
   weight: ["400", "600", "700", "800"],
 });
 
-export const metadata: Metadata = {
-  title: "Allan Johnson | Personal Life Coach",
-  description:
-    "Transform your life with personal coaching from Allan Johnson. Health & wellness, career, and personal life coaching services.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const client = createClient();
+  const settings = await client.getSingle("settings");
 
-export default function RootLayout({
+  return {
+    title: settings.data.site_title
+      ? `${settings.data.site_title} | ${settings.data.site_tagline ?? "Personal Life Coach"}`
+      : "Allan Johnson | Personal Life Coach",
+    description:
+      settings.data.meta_description ??
+      "Transform your life with personal coaching from Allan Johnson. Health & wellness, career, and personal life coaching services.",
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const client = createClient();
+  const settings = await client.getSingle("settings");
+
+  const navigation = settings.data.navigation.map((item) => ({
+    label: item.label ?? "",
+    href: item.href ?? "",
+  }));
+
+  const contact = {
+    address: settings.data.address ?? "",
+    phone: settings.data.phone ?? "",
+    fax: settings.data.fax ?? "",
+    email: settings.data.email ?? "",
+  };
+
+  const socialLinks = settings.data.social_links.map((item) => ({
+    platform: (item.platform ?? "") as string,
+    url: item.url ?? "#",
+  }));
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${raleway.variable} antialiased`}
       >
-        <Header />
+        <Header
+          navigation={navigation}
+          siteTitle={settings.data.site_title ?? "Allan Johnson"}
+          siteTagline={settings.data.site_tagline ?? "Personal Life Coach"}
+        />
         {children}
-        <Footer />
+        <Footer
+          contact={contact}
+          socialLinks={socialLinks}
+          siteTitle={settings.data.site_title ?? "Allan Johnson"}
+          siteTagline={settings.data.site_tagline ?? "Personal Life Coach"}
+        />
+        <PrismicPreview repositoryName={repositoryName} />
       </body>
     </html>
   );

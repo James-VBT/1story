@@ -1,0 +1,71 @@
+{
+  "id": "about_section",
+  "type": "SharedSlice",
+  "name": "AboutSection",
+  "description": "About section with text, quote, and portrait image",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": "About Me"
+          }
+        },
+        "body_text": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Body Text",
+            "multi": "paragraph,strong,em",
+            "allowTargetBlank": true
+          }
+        },
+        "quote_text": {
+          "type": "Text",
+          "config": {
+            "label": "Quote Text"
+          }
+        },
+        "quote_author": {
+          "type": "Text",
+          "config": {
+            "label": "Quote Author"
+          }
+        },
+        "portrait_image": {
+          "type": "Image",
+          "config": {
+            "label": "Portrait Image",
+            "constraint": {
+              "width": 800,
+              "height": 800
+            },
+            "thumbnails": []
+          }
+        },
+        "cta_text": {
+          "type": "Text",
+          "config": {
+            "label": "CTA Text",
+            "placeholder": "Read More"
+          }
+        },
+        "cta_link": {
+          "type": "Text",
+          "config": {
+            "label": "CTA Link",
+            "placeholder": "/book-now"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

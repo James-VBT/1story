@@ -1,10 +1,16 @@
-import Image from "next/image";
+import type { ImageField } from "@prismicio/client";
+import { PrismicNextImage } from "@prismicio/next";
 import { HiOutlineClock } from "react-icons/hi2";
-import type { Service } from "@/lib/data";
 import Button from "./Button";
 
 interface ServiceCardProps {
-  service: Service;
+  service: {
+    title: string;
+    description: string;
+    priceLabel: string;
+    duration: string;
+    image: ImageField;
+  };
 }
 
 export default function ServiceCard({ service }: ServiceCardProps) {
@@ -12,9 +18,8 @@ export default function ServiceCard({ service }: ServiceCardProps) {
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
       {/* Service Image */}
       <div className="aspect-[4/3] relative overflow-hidden">
-        <Image
-          src={service.image}
-          alt={service.title}
+        <PrismicNextImage
+          field={service.image}
           fill
           className="object-cover group-hover:scale-110 transition-transform duration-500"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

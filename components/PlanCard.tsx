@@ -1,9 +1,16 @@
 import { HiOutlineCheck } from "react-icons/hi2";
-import type { Plan } from "@/lib/data";
 import Button from "./Button";
 
 interface PlanCardProps {
-  plan: Plan;
+  plan: {
+    name: string;
+    price: number;
+    savings: string;
+    duration: string;
+    description: string;
+    features: string[];
+    featured: boolean;
+  };
 }
 
 export default function PlanCard({ plan }: PlanCardProps) {

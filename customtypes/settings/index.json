@@ -1,0 +1,113 @@
+{
+  "id": "settings",
+  "label": "Settings",
+  "format": "custom",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Main": {
+      "site_title": {
+        "type": "Text",
+        "config": {
+          "label": "Site Title",
+          "placeholder": "Allan Johnson"
+        }
+      },
+      "site_tagline": {
+        "type": "Text",
+        "config": {
+          "label": "Site Tagline",
+          "placeholder": "Personal Life Coach"
+        }
+      },
+      "meta_description": {
+        "type": "Text",
+        "config": {
+          "label": "Meta Description"
+        }
+      },
+      "og_image": {
+        "type": "Image",
+        "config": {
+          "label": "OG Image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      }
+    },
+    "Navigation": {
+      "navigation": {
+        "type": "Group",
+        "config": {
+          "label": "Navigation Links",
+          "fields": {
+            "label": {
+              "type": "Text",
+              "config": {
+                "label": "Label",
+                "placeholder": "About"
+              }
+            },
+            "href": {
+              "type": "Text",
+              "config": {
+                "label": "Link Path",
+                "placeholder": "/book-now or /#about"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Contact": {
+      "address": {
+        "type": "Text",
+        "config": {
+          "label": "Address"
+        }
+      },
+      "phone": {
+        "type": "Text",
+        "config": {
+          "label": "Phone"
+        }
+      },
+      "fax": {
+        "type": "Text",
+        "config": {
+          "label": "Fax"
+        }
+      },
+      "email": {
+        "type": "Text",
+        "config": {
+          "label": "Email"
+        }
+      }
+    },
+    "Social": {
+      "social_links": {
+        "type": "Group",
+        "config": {
+          "label": "Social Links",
+          "fields": {
+            "platform": {
+              "type": "Select",
+              "config": {
+                "label": "Platform",
+                "options": ["Facebook", "X", "Instagram", "YouTube"]
+              }
+            },
+            "url": {
+              "type": "Text",
+              "config": {
+                "label": "URL",
+                "placeholder": "https://facebook.com/..."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

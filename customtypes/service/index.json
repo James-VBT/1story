@@ -1,0 +1,63 @@
+{
+  "id": "service",
+  "label": "Service",
+  "format": "custom",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": "Health & Wellness Coaching"
+        }
+      },
+      "description": {
+        "type": "Text",
+        "config": {
+          "label": "Description",
+          "placeholder": "Transform your life, one healthy habit at a time."
+        }
+      },
+      "image": {
+        "type": "Image",
+        "config": {
+          "label": "Image",
+          "constraint": {
+            "width": 800,
+            "height": 600
+          },
+          "thumbnails": []
+        }
+      },
+      "price_label": {
+        "type": "Text",
+        "config": {
+          "label": "Price Label",
+          "placeholder": "$100 or Free"
+        }
+      },
+      "duration": {
+        "type": "Text",
+        "config": {
+          "label": "Duration",
+          "placeholder": "1 hr"
+        }
+      },
+      "category": {
+        "type": "Select",
+        "config": {
+          "label": "Category",
+          "options": ["Personal Growth", "Career Ambitions"]
+        }
+      },
+      "sort_order": {
+        "type": "Number",
+        "config": {
+          "label": "Sort Order"
+        }
+      }
+    }
+  }
+}
