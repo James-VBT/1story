@@ -4,6 +4,7 @@ import { createClient } from "@/prismicio";
 import SectionHeading from "@/components/SectionHeading";
 import ServiceCard from "@/components/ServiceCard";
 import Button from "@/components/Button";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/animations";
 
 type ServicesPreviewProps = SliceComponentProps<Content.ServicesPreviewSlice>;
 
@@ -25,33 +26,38 @@ export default async function ServicesPreview({ slice }: ServicesPreviewProps) {
       className="py-20 bg-gray-light"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeading
-          title={slice.primary.heading ?? "Services"}
-          subtitle={slice.primary.subtitle ?? undefined}
-          alignment="center"
-        />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+        <FadeIn>
+          <SectionHeading
+            title={slice.primary.heading ?? "Services"}
+            subtitle={slice.primary.subtitle ?? undefined}
+            alignment="center"
+          />
+        </FadeIn>
+        <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
           {services.map((service) => (
-            <ServiceCard
-              key={service.id}
-              service={{
-                title: service.data.title ?? "",
-                description: service.data.description ?? "",
-                priceLabel: service.data.price_label ?? "",
-                duration: service.data.duration ?? "",
-                image: service.data.image,
-              }}
-            />
+            <StaggerItem key={service.id}>
+              <ServiceCard
+                service={{
+                  title: service.data.title ?? "",
+                  description: service.data.description ?? "",
+                  priceLabel: service.data.price_label ?? "",
+                  duration: service.data.duration ?? "",
+                  image: service.data.image,
+                }}
+              />
+            </StaggerItem>
           ))}
-        </div>
-        <div className="text-center mt-12">
-          <Button
-            variant="outline"
-            href={slice.primary.cta_link ?? "/book-now"}
-          >
-            {slice.primary.cta_text ?? "More Services"}
-          </Button>
-        </div>
+        </StaggerContainer>
+        <FadeIn delay={0.4}>
+          <div className="text-center mt-12">
+            <Button
+              variant="outline"
+              href={slice.primary.cta_link ?? "/book-now"}
+            >
+              {slice.primary.cta_text ?? "More Services"}
+            </Button>
+          </div>
+        </FadeIn>
       </div>
     </section>
   );

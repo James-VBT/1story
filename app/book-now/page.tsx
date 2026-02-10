@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { createClient } from "@/prismicio";
 import SectionHeading from "@/components/SectionHeading";
 import ServiceCard from "@/components/ServiceCard";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/animations";
 
 export async function generateMetadata(): Promise<Metadata> {
   const client = createClient();
@@ -28,25 +29,28 @@ export default async function GalleryPage() {
   return (
     <main className="pt-28 pb-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeading
-          title={page.data.heading ?? "Gallery"}
-          subtitle={page.data.subtitle ?? undefined}
-          alignment="center"
-        />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+        <FadeIn>
+          <SectionHeading
+            title={page.data.heading ?? "Gallery"}
+            subtitle={page.data.subtitle ?? undefined}
+            alignment="center"
+          />
+        </FadeIn>
+        <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
           {services.map((service) => (
-            <ServiceCard
-              key={service.id}
-              service={{
-                title: service.data.title ?? "",
-                description: service.data.description ?? "",
-                priceLabel: service.data.price_label ?? "",
-                duration: service.data.duration ?? "",
-                image: service.data.image,
-              }}
-            />
+            <StaggerItem key={service.id}>
+              <ServiceCard
+                service={{
+                  title: service.data.title ?? "",
+                  description: service.data.description ?? "",
+                  priceLabel: service.data.price_label ?? "",
+                  duration: service.data.duration ?? "",
+                  image: service.data.image,
+                }}
+              />
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
     </main>
   );

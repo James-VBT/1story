@@ -4,6 +4,7 @@ import { PrismicRichText } from "@prismicio/react";
 import { PrismicNextImage } from "@prismicio/next";
 import SectionHeading from "@/components/SectionHeading";
 import Button from "@/components/Button";
+import { FadeIn } from "@/components/animations";
 
 type AboutSectionProps = SliceComponentProps<Content.AboutSectionSlice>;
 
@@ -18,7 +19,7 @@ export default function AboutSection({ slice }: AboutSectionProps) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Text Column */}
-          <div>
+          <FadeIn direction="left">
             <SectionHeading
               title={slice.primary.heading ?? "About Me"}
               alignment="left"
@@ -52,17 +53,19 @@ export default function AboutSection({ slice }: AboutSectionProps) {
             >
               {slice.primary.cta_text ?? "Read More"}
             </Button>
-          </div>
+          </FadeIn>
 
           {/* Portrait Image */}
-          <div className="aspect-square relative rounded-lg overflow-hidden">
-            <PrismicNextImage
-              field={slice.primary.portrait_image}
-              fill
-              className="object-cover object-top"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-          </div>
+          <FadeIn direction="right" delay={0.2}>
+            <div className="aspect-square relative rounded-lg overflow-hidden">
+              <PrismicNextImage
+                field={slice.primary.portrait_image}
+                fill
+                className="object-cover object-top"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+          </FadeIn>
         </div>
       </div>
     </section>
