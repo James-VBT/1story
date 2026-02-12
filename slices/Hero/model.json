@@ -12,10 +12,17 @@
       "description": "Default",
       "imageUrl": "",
       "primary": {
+        "youtube_video_url": {
+          "type": "Text",
+          "config": {
+            "label": "YouTube Video URL",
+            "placeholder": "https://www.youtube.com/watch?v=VIDEO_ID"
+          }
+        },
         "background_image": {
           "type": "Image",
           "config": {
-            "label": "Background Image",
+            "label": "Background Image (fallback poster)",
             "constraint": {
               "width": 1920,
               "height": 1080

@@ -125,6 +125,7 @@ export type PlanDocument = prismic.PrismicDocumentWithoutUID<
 
 // Hero Slice
 export interface HeroSliceDefaultPrimary {
+  youtube_video_url: prismic.KeyTextField;
   background_image: prismic.ImageField;
   eyebrow_text: prismic.KeyTextField;
   heading: prismic.KeyTextField;

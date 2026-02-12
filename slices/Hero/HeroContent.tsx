@@ -21,7 +21,7 @@ export default function HeroContent({
   ctaLink,
 }: HeroContentProps) {
   return (
-    <div className="relative z-10 text-center text-white px-4">
+    <div className="relative z-10 text-center text-white px-4 pb-16 md:pb-24">
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
