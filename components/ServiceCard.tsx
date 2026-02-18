@@ -15,7 +15,7 @@ interface ServiceCardProps {
 
 export default function ServiceCard({ service }: ServiceCardProps) {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group flex flex-col h-full">
       {/* Service Image */}
       <div className="aspect-[4/3] relative overflow-hidden">
         <PrismicNextImage
@@ -27,7 +27,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
       </div>
 
       {/* Content */}
-      <div className="p-6">
+      <div className="p-6 flex flex-col flex-1">
         <h3 className="font-heading uppercase tracking-wider text-sm font-bold mb-2 text-foreground">
           {service.title}
         </h3>
@@ -43,7 +43,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
             {service.duration}
           </span>
         </div>
-        <Button variant="primary" className="w-full text-xs py-2.5">
+        <Button variant="primary" className="w-full text-xs py-2.5 mt-auto">
           Book Now
         </Button>
       </div>

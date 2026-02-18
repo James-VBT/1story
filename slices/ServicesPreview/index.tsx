@@ -35,7 +35,7 @@ export default async function ServicesPreview({ slice }: ServicesPreviewProps) {
         </FadeIn>
         <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
           {services.map((service) => (
-            <StaggerItem key={service.id}>
+            <StaggerItem key={service.id} className="h-full">
               <ServiceCard
                 service={{
                   title: service.data.title ?? "",
