@@ -10,6 +10,7 @@ interface ServiceCardProps {
     priceLabel: string;
     duration: string;
     image: ImageField;
+    uid?: string;
   };
 }
 
@@ -43,7 +44,11 @@ export default function ServiceCard({ service }: ServiceCardProps) {
             {service.duration}
           </span>
         </div>
-        <Button variant="primary" className="w-full text-xs py-2.5 mt-auto">
+        <Button
+          variant="primary"
+          href={service.uid ? `/services/${service.uid}` : "/book-now"}
+          className="w-full text-xs py-2.5 mt-auto"
+        >
           Book Now
         </Button>
       </div>
