@@ -1,4 +1,20 @@
+import type { Metadata } from "next";
 import SectionHeading from "@/components/SectionHeading";
+
+export const metadata: Metadata = {
+  title: "Guides",
+  description: "Access exclusive guides and resources to support your coaching journey.",
+  alternates: { canonical: "/guides" },
+  openGraph: {
+    title: "Guides",
+    description: "Access exclusive guides and resources to support your coaching journey.",
+    url: "/guides",
+  },
+  twitter: {
+    title: "Guides",
+    description: "Access exclusive guides and resources to support your coaching journey.",
+  },
+};
 
 export default function GuidesPage() {
   return (

@@ -8,9 +8,15 @@ export async function generateMetadata(): Promise<Metadata> {
   const client = createClient();
   const page = await client.getSingle("gallery_page");
 
+  const title = page.data.meta_title ?? undefined;
+  const description = page.data.meta_description ?? undefined;
+
   return {
-    title: page.data.meta_title ?? undefined,
-    description: page.data.meta_description ?? undefined,
+    title,
+    description,
+    alternates: { canonical: "/book-now" },
+    openGraph: { title, description, url: "/book-now" },
+    twitter: { title, description },
   };
 }
 

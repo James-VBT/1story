@@ -22,17 +22,51 @@ const raleway = Raleway({
   weight: ["400", "600", "700", "800"],
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://1-story.com";
+
 export async function generateMetadata(): Promise<Metadata> {
   const client = createClient();
   const settings = await client.getSingle("settings");
 
+  const title = settings.data.site_title
+    ? `${settings.data.site_title} | ${settings.data.site_tagline ?? "Personal Life Coach"}`
+    : "Allan Johnson | Personal Life Coach";
+
+  const description =
+    settings.data.meta_description ??
+    "Transform your life with personal coaching from Allan Johnson. Health & wellness, career, and personal life coaching services.";
+
+  const ogImage = settings.data.og_image?.url ?? `${siteUrl}/og-default.jpg`;
+
   return {
-    title: settings.data.site_title
-      ? `${settings.data.site_title} | ${settings.data.site_tagline ?? "Personal Life Coach"}`
-      : "Allan Johnson | Personal Life Coach",
-    description:
-      settings.data.meta_description ??
-      "Transform your life with personal coaching from Allan Johnson. Health & wellness, career, and personal life coaching services.",
+    metadataBase: new URL(siteUrl),
+    title: {
+      default: title,
+      template: `%s | ${settings.data.site_title ?? "1Story"}`,
+    },
+    description,
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true },
+    },
+    openGraph: {
+      type: "website",
+      siteName: settings.data.site_title ?? "1Story",
+      title,
+      description,
+      url: siteUrl,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [ogImage],
+    },
+    alternates: {
+      canonical: siteUrl,
+    },
   };
 }
 
