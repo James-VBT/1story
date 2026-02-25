@@ -39,7 +39,7 @@ export default function ServiceDetailPage() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col flex-1">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-1.5 text-xs text-gray-medium mb-6 uppercase tracking-widest">
+        <nav className="flex flex-wrap items-center gap-1.5 text-xs text-gray-medium mb-6 uppercase tracking-widest">
           <Link href="/" className="hover:text-teal transition-colors">Home</Link>
           <HiChevronRight size={12} />
           <Link href="/book-now" className="hover:text-teal transition-colors">Services</Link>
@@ -48,10 +48,10 @@ export default function ServiceDetailPage() {
         </nav>
 
         {/* Two-column layout */}
-        <div className="grid lg:grid-cols-[55%_1fr] gap-12 lg:gap-16 items-start flex-1">
+        <div className="grid lg:grid-cols-[55%_1fr] gap-8 lg:gap-16 items-start lg:flex-1">
 
           {/* Left — image gallery */}
-          <FadeIn direction="up" delay={0.1} className="h-full">
+          <FadeIn direction="up" delay={0.1} className="lg:h-full">
             <ServiceImageGallery images={images} />
           </FadeIn>
 

@@ -43,10 +43,10 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
 
   return (
     <>
-      <div className="flex flex-col gap-3 h-full">
+      <div className="flex flex-col gap-3 lg:h-full">
         {/* Main image — click to open lightbox */}
         <div
-          className="relative flex-1 min-h-[280px] overflow-hidden rounded-lg bg-gray-100 cursor-zoom-in"
+          className="relative aspect-[4/3] lg:aspect-auto lg:flex-1 lg:min-h-[280px] overflow-hidden rounded-lg bg-gray-100 cursor-zoom-in"
           onClick={() => setLightboxOpen(true)}
         >
           <Image
@@ -61,7 +61,7 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
         </div>
 
         {/* Thumbnail strip */}
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center gap-2">
           {/* Prev arrow */}
           <button
             onClick={prev}
@@ -71,14 +71,14 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
             <HiChevronLeft size={18} />
           </button>
 
-          {/* Thumbnails — fixed height row, no scrollbar gap */}
-          <div className="flex gap-2">
+          {/* Thumbnails — scrollable on mobile, centered on desktop */}
+          <div className="flex-1 min-w-0 overflow-x-auto flex gap-1.5 sm:justify-center">
             {images.map((img, i) => (
               <button
                 key={i}
                 onClick={() => setActiveIndex(i)}
                 aria-label={`View image ${i + 1}`}
-                className={`relative flex-shrink-0 w-16 h-16 rounded overflow-hidden border-2 transition-all duration-200 ${
+                className={`relative flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded overflow-hidden border-2 transition-all duration-200 ${
                   i === activeIndex
                     ? "border-teal"
                     : "border-transparent hover:border-gray-300"
@@ -125,7 +125,7 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
           <button
             onClick={(e) => { e.stopPropagation(); prev(); }}
             aria-label="Previous image"
-            className="absolute left-4 text-white/70 hover:text-white transition-colors p-2"
+            className="absolute left-4 z-10 text-white/70 hover:text-white transition-colors p-2"
           >
             <HiChevronLeft size={36} />
           </button>
@@ -149,7 +149,7 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
           <button
             onClick={(e) => { e.stopPropagation(); next(); }}
             aria-label="Next image"
-            className="absolute right-4 text-white/70 hover:text-white transition-colors p-2"
+            className="absolute right-4 z-10 text-white/70 hover:text-white transition-colors p-2"
           >
             <HiChevronRight size={36} />
           </button>
