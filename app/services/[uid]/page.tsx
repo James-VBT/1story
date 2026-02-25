@@ -35,16 +35,16 @@ export default function ServiceDetailPage() {
   const { title, category, description, images } = STATIC_SERVICE;
 
   return (
-    <main className="pt-28 pb-8 bg-white min-h-screen flex flex-col">
+    <main className="pt-28 pb-8 bg-white min-h-screen flex flex-col overflow-x-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col flex-1">
 
         {/* Breadcrumb */}
-        <nav className="flex flex-wrap items-center gap-1.5 text-xs text-gray-medium mb-6 uppercase tracking-widest">
-          <Link href="/" className="hover:text-teal transition-colors">Home</Link>
-          <HiChevronRight size={12} />
-          <Link href="/book-now" className="hover:text-teal transition-colors">Services</Link>
-          <HiChevronRight size={12} />
-          <span className="text-foreground font-semibold">{title}</span>
+        <nav className="flex flex-wrap items-center gap-1.5 text-xs text-gray-medium mb-6 uppercase tracking-wider lg:tracking-widest">
+          <Link href="/" className="hover:text-teal transition-colors flex-shrink-0">Home</Link>
+          <HiChevronRight size={12} className="flex-shrink-0" />
+          <Link href="/book-now" className="hover:text-teal transition-colors flex-shrink-0">Services</Link>
+          <HiChevronRight size={12} className="flex-shrink-0" />
+          <span className="text-foreground font-semibold truncate min-w-0">{title}</span>
         </nav>
 
         {/* Two-column layout */}
