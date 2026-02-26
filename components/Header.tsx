@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { HiOutlineBars3, HiOutlineXMark } from "react-icons/hi2";
@@ -27,12 +28,14 @@ export default function Header({ navigation, siteTitle, siteTagline }: HeaderPro
         <div className="flex items-center justify-between h-20">
           {/* Brand */}
           <Link href="/" className="flex-shrink-0">
-            <span className="font-heading uppercase tracking-[0.15em] text-lg font-extrabold text-foreground block leading-tight">
-              {siteTitle}
-            </span>
-            <span className="text-xs text-gray-medium tracking-wider uppercase">
-              {siteTagline}
-            </span>
+            <Image
+              src="/logo1.svg"
+              alt={siteTitle}
+              width={140}
+              height={48}
+              priority
+              className="h-12 w-auto"
+            />
           </Link>
 
           {/* Desktop Nav */}
