@@ -61,7 +61,7 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
         </div>
 
         {/* Thumbnail strip */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center gap-2 w-full">
           {/* Prev arrow */}
           <button
             onClick={prev}
@@ -71,8 +71,8 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
             <HiChevronLeft size={18} />
           </button>
 
-          {/* Thumbnails — scrollable on mobile, centered on desktop */}
-          <div className="flex-1 min-w-0 overflow-x-auto flex gap-1 sm:gap-1.5 sm:justify-center">
+          {/* Thumbnails — 4 visible on mobile (scrollable), centered on sm+ */}
+          <div className="flex-1 min-w-0 max-w-[168px] sm:max-w-none overflow-x-auto flex gap-2 sm:justify-center lg:justify-center scrollbar-hide">
             {images.map((img, i) => (
               <button
                 key={i}
