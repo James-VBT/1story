@@ -72,13 +72,13 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
           </button>
 
           {/* Thumbnails — scrollable on mobile, centered on desktop */}
-          <div className="flex-1 min-w-0 overflow-x-auto flex gap-1.5 sm:justify-center">
+          <div className="flex-1 min-w-0 overflow-x-auto flex gap-1 sm:gap-1.5 sm:justify-center">
             {images.map((img, i) => (
               <button
                 key={i}
                 onClick={() => setActiveIndex(i)}
                 aria-label={`View image ${i + 1}`}
-                className={`relative flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded overflow-hidden border-2 transition-all duration-200 ${
+                className={`relative flex-shrink-0 w-9 h-9 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded overflow-hidden border-2 transition-all duration-200 ${
                   i === activeIndex
                     ? "border-teal"
                     : "border-transparent hover:border-gray-300"

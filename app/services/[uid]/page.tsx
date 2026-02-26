@@ -39,12 +39,12 @@ export default function ServiceDetailPage() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col flex-1">
 
         {/* Breadcrumb */}
-        <nav className="flex flex-wrap items-center gap-1.5 text-xs text-gray-medium mb-6 uppercase tracking-wider lg:tracking-widest">
+        <nav className="flex items-center gap-1.5 text-xs text-gray-medium mb-6 uppercase tracking-wider lg:tracking-widest overflow-hidden">
           <Link href="/" className="hover:text-teal transition-colors flex-shrink-0">Home</Link>
           <HiChevronRight size={12} className="flex-shrink-0" />
           <Link href="/book-now" className="hover:text-teal transition-colors flex-shrink-0">Services</Link>
           <HiChevronRight size={12} className="flex-shrink-0" />
-          <span className="text-foreground font-semibold truncate min-w-0">{title}</span>
+          <span className="text-foreground font-semibold truncate flex-1 min-w-0">{title}</span>
         </nav>
 
         {/* Two-column layout */}
@@ -66,7 +66,7 @@ export default function ServiceDetailPage() {
 
             {/* Title */}
             <StaggerItem>
-              <h1 className="font-heading text-3xl md:text-4xl font-extrabold uppercase tracking-[0.1em] text-foreground leading-tight mb-6">
+              <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight sm:tracking-[0.05em] md:tracking-[0.1em] text-foreground leading-tight mb-6">
                 {title}
               </h1>
             </StaggerItem>
