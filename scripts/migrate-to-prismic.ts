@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { config } from "dotenv";
 config({ path: ".env.local" });
 
@@ -89,6 +90,7 @@ migration.createDocument(
       site_tagline: "Personal Life Coach",
       meta_description:
         "Personal life coaching services to help you achieve your goals.",
+      og_image: undefined,
       navigation: [
         { label: "About", href: "/#about" },
         { label: "Gallery", href: "/book-now" },
@@ -113,83 +115,100 @@ migration.createDocument(
 // --- Services (repeatable) ---
 const servicesData = [
   {
+    uid: "health-wellness-coaching",
     title: "Health & Wellness Coaching",
+    meta_title: null,
+    meta_description: null,
     description: "Transform your life, one healthy habit at a time.",
-    price_label: "$100",
-    duration: "1 hr",
-    category: "Personal Growth",
+    category: "Personal Growth" as const,
     image: serviceImages["health-wellness"],
+    body: [] as prismic.RichTextField,
+    gallery: [] as prismic.GroupField<{ image: prismic.ImageField }>,
     sort_order: 1,
   },
   {
+    uid: "personal-life-coaching",
     title: "Personal Life Coaching",
-    description:
-      "Make, meet and exceed your personal and professional goals.",
-    price_label: "$100",
-    duration: "1 hr",
-    category: "Personal Growth",
+    meta_title: null,
+    meta_description: null,
+    description: "Make, meet and exceed your personal and professional goals.",
+    category: "Personal Growth" as const,
     image: serviceImages["personal-life"],
+    body: [] as prismic.RichTextField,
+    gallery: [] as prismic.GroupField<{ image: prismic.ImageField }>,
     sort_order: 2,
   },
   {
+    uid: "career-coaching-executive",
     title: "Career Coaching - Executive",
-    description:
-      "Enhance your leadership and management skills. Tailored to executives.",
-    price_label: "$250",
-    duration: "1.5 hrs",
-    category: "Career Ambitions",
+    meta_title: null,
+    meta_description: null,
+    description: "Enhance your leadership and management skills. Tailored to executives.",
+    category: "Career Ambitions" as const,
     image: serviceImages["career-executive"],
+    body: [] as prismic.RichTextField,
+    gallery: [] as prismic.GroupField<{ image: prismic.ImageField }>,
     sort_order: 3,
   },
   {
+    uid: "introductory-consultation",
     title: "Introductory Consultation",
-    description:
-      "Get a free assessment and find out if life coaching is right for you.",
-    price_label: "Free",
-    duration: "15 min",
-    category: "Personal Growth",
+    meta_title: null,
+    meta_description: null,
+    description: "Get a free assessment and find out if life coaching is right for you.",
+    category: "Personal Growth" as const,
     image: serviceImages["intro-consultation"],
+    body: [] as prismic.RichTextField,
+    gallery: [] as prismic.GroupField<{ image: prismic.ImageField }>,
     sort_order: 4,
   },
   {
+    uid: "master-your-finances",
     title: "Master Your Finances",
+    meta_title: null,
+    meta_description: null,
     description: "Take control of your finances once and for all.",
-    price_label: "$100",
-    duration: "1 hr",
-    category: "Personal Growth",
+    category: "Personal Growth" as const,
     image: serviceImages["master-finances"],
+    body: [] as prismic.RichTextField,
+    gallery: [] as prismic.GroupField<{ image: prismic.ImageField }>,
     sort_order: 5,
   },
   {
+    uid: "career-coaching-individual",
     title: "Career Coaching - Individual",
-    description:
-      "Unlock your potential and enjoy the professional success you deserve.",
-    price_label: "$100",
-    duration: "1 hr",
-    category: "Career Ambitions",
+    meta_title: null,
+    meta_description: null,
+    description: "Unlock your potential and enjoy the professional success you deserve.",
+    category: "Career Ambitions" as const,
     image: serviceImages["career-individual"],
+    body: [] as prismic.RichTextField,
+    gallery: [] as prismic.GroupField<{ image: prismic.ImageField }>,
     sort_order: 6,
   },
   {
+    uid: "team-coaching-group",
     title: "Team Coaching - Group",
-    description:
-      "Improve your team's productivity, efficiency, communication and more.",
-    price_label: "$550",
-    duration: "5 hrs",
-    category: "Career Ambitions",
+    meta_title: null,
+    meta_description: null,
+    description: "Improve your team's productivity, efficiency, communication and more.",
+    category: "Career Ambitions" as const,
     image: serviceImages["team-group"],
+    body: [] as prismic.RichTextField,
+    gallery: [] as prismic.GroupField<{ image: prismic.ImageField }>,
     sort_order: 7,
   },
 ];
 
-for (const service of servicesData) {
+for (const { uid, ...data } of servicesData) {
   migration.createDocument(
     {
       type: "service",
+      uid,
       lang: "en-us",
-      data: service,
+      data,
     },
-    `Service: ${service.title}`
+    `Service: ${data.title}`
   );
 }
 
@@ -202,7 +221,7 @@ const plansData = [
     duration: "3 Months",
     description: "Take the first steps on your path to a better future",
     featured: false,
-    features: [{ feature_text: "3 Personal Life Coaching Sessions" }],
+    features: [{ feature_text: "3 Personal Life Coaching Sessions" }] as prismic.GroupField<{ feature_text: prismic.KeyTextField }>,
     sort_order: 1,
   },
   {
@@ -214,7 +233,7 @@ const plansData = [
     featured: true,
     features: [
       { feature_text: "6 Personal and Career Coaching Sessions" },
-    ],
+    ] as prismic.GroupField<{ feature_text: prismic.KeyTextField }>,
     sort_order: 2,
   },
   {
@@ -224,7 +243,7 @@ const plansData = [
     duration: "1 Year",
     description: "Elevate your future with a total transformation",
     featured: false,
-    features: [{ feature_text: "Mix from all coaching session types" }],
+    features: [{ feature_text: "Mix from all coaching session types" }] as prismic.GroupField<{ feature_text: prismic.KeyTextField }>,
     sort_order: 3,
   },
 ];
