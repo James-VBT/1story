@@ -1,16 +1,13 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import type { ImageField } from "@prismicio/client";
+import { PrismicNextImage } from "@prismicio/next";
 import Image from "next/image";
 import { HiChevronLeft, HiChevronRight, HiXMark } from "react-icons/hi2";
 
-interface GalleryImage {
-  src: string;
-  alt: string;
-}
-
 interface ServiceImageGalleryProps {
-  images: GalleryImage[];
+  images: ImageField[];
 }
 
 export default function ServiceImageGallery({ images }: ServiceImageGalleryProps) {
@@ -41,6 +38,8 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
 
   if (!images.length) return null;
 
+  const activeImage = images[activeIndex];
+
   return (
     <>
       <div className="flex flex-col gap-3">
@@ -49,13 +48,11 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
           className="relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-100 cursor-zoom-in"
           onClick={() => setLightboxOpen(true)}
         >
-          <Image
+          <PrismicNextImage
             key={activeIndex}
-            src={images[activeIndex].src}
-            alt={images[activeIndex].alt}
+            field={activeImage}
             fill
             className="object-cover transition-opacity duration-300"
-            priority
             sizes="(max-width: 768px) 100vw, 55vw"
           />
         </div>
@@ -71,7 +68,7 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
             <HiChevronLeft size={18} />
           </button>
 
-          {/* Thumbnails — 4 visible on mobile (scrollable), centered on sm+ */}
+          {/* Thumbnails — scrollable on mobile, centered on sm+ */}
           <div className="flex-1 min-w-0 max-w-[200px] sm:max-w-none overflow-x-auto flex gap-2 sm:justify-center lg:justify-center scrollbar-hide">
             {images.map((img, i) => (
               <button
@@ -84,9 +81,8 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
                     : "border-transparent hover:border-gray-300"
                 }`}
               >
-                <Image
-                  src={img.src}
-                  alt={img.alt}
+                <PrismicNextImage
+                  field={img}
                   fill
                   className="object-cover"
                   sizes="64px"
@@ -130,19 +126,21 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
             <HiChevronLeft size={36} />
           </button>
 
-          {/* Lightbox image */}
+          {/* Lightbox image — use raw URL for full-res display */}
           <div
             className="relative w-[90vw] max-w-5xl aspect-[4/3]"
             onClick={(e) => e.stopPropagation()}
           >
-            <Image
-              src={images[activeIndex].src}
-              alt={images[activeIndex].alt}
-              fill
-              className="object-contain"
-              sizes="90vw"
-              priority
-            />
+            {activeImage.url ? (
+              <Image
+                src={activeImage.url}
+                alt={activeImage.alt ?? ""}
+                fill
+                className="object-contain"
+                sizes="90vw"
+                priority
+              />
+            ) : null}
           </div>
 
           {/* Next */}

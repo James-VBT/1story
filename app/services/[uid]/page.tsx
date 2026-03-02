@@ -38,20 +38,12 @@ export default async function ServiceDetailPage({ params }: Props) {
 
   const { title, category, description, body, gallery, image } = service.data;
 
-  // Build the gallery array; fall back to the card thumbnail if gallery is empty
-  const galleryImages = (gallery ?? [])
-    .map(({ image: img }) => ({
-      src: img.url ?? "",
-      alt: img.alt ?? title ?? "",
-    }))
-    .filter(({ src }) => Boolean(src));
+  // Build the gallery as ImageField[]; fall back to the card thumbnail if gallery is empty
+  const galleryFields = (gallery ?? [])
+    .map(({ image: img }) => img)
+    .filter((img) => Boolean(img.url));
 
-  const images =
-    galleryImages.length > 0
-      ? galleryImages
-      : image?.url
-      ? [{ src: image.url, alt: image.alt ?? title ?? "" }]
-      : [];
+  const images = galleryFields.length > 0 ? galleryFields : image?.url ? [image] : [];
 
   return (
     <main className="pt-28 pb-20 bg-white min-h-screen flex flex-col overflow-x-hidden">

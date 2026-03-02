@@ -7,14 +7,10 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.prismic.io",
-      },
-      {
-        protocol: "https",
-        hostname: "*.cdn.prismic.io",
-      },
+      { protocol: "https", hostname: "images.prismic.io" },
+      { protocol: "https", hostname: "*.cdn.prismic.io" },
+      { protocol: "https", hostname: "*.prismic.io" },
+      { protocol: "https", hostname: "prismic-io.s3.amazonaws.com" },
     ],
   },
 };
