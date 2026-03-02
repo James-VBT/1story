@@ -46,7 +46,7 @@ function imageField(assetId: string) {
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-async function updateDoc(id: string, title: string, data: Record<string, unknown>) {
+async function updateDoc(id: string, title: string, data: Record<string, unknown>, uid?: string) {
   for (let attempt = 0; attempt < 3; attempt++) {
     const res = await fetch(`${MIGRATION_API}/${id}`, {
       method: "PUT",
@@ -55,7 +55,7 @@ async function updateDoc(id: string, title: string, data: Record<string, unknown
         "Content-Type": "application/json",
         repository: repo,
       },
-      body: JSON.stringify({ title, data }),
+      body: JSON.stringify({ title, ...(uid ? { uid } : {}), data }),
     });
 
     if (res.status === 429) {
@@ -102,64 +102,57 @@ async function run() {
   console.log("\nUpdating Services...");
   const servicesData = [
     {
+      uid: "health-wellness-coaching",
       title: "Health & Wellness Coaching",
       description: "Transform your life, one healthy habit at a time.",
-      price_label: "$100",
-      duration: "1 hr",
       category: "Personal Growth",
       image: imageField(assets.healthWellness),
       sort_order: 1,
     },
     {
+      uid: "personal-life-coaching",
       title: "Personal Life Coaching",
       description: "Make, meet and exceed your personal and professional goals.",
-      price_label: "$100",
-      duration: "1 hr",
       category: "Personal Growth",
       image: imageField(assets.personalLife),
       sort_order: 2,
     },
     {
+      uid: "career-coaching-executive",
       title: "Career Coaching - Executive",
       description: "Enhance your leadership and management skills. Tailored to executives.",
-      price_label: "$250",
-      duration: "1.5 hrs",
       category: "Career Ambitions",
       image: imageField(assets.careerExecutive),
       sort_order: 3,
     },
     {
+      uid: "introductory-consultation",
       title: "Introductory Consultation",
       description: "Get a free assessment and find out if life coaching is right for you.",
-      price_label: "Free",
-      duration: "15 min",
       category: "Personal Growth",
       image: imageField(assets.introConsultation),
       sort_order: 4,
     },
     {
+      uid: "master-your-finances",
       title: "Master Your Finances",
       description: "Take control of your finances once and for all.",
-      price_label: "$100",
-      duration: "1 hr",
       category: "Personal Growth",
       image: imageField(assets.masterFinances),
       sort_order: 5,
     },
     {
+      uid: "career-coaching-individual",
       title: "Career Coaching - Individual",
       description: "Unlock your potential and enjoy the professional success you deserve.",
-      price_label: "$100",
-      duration: "1 hr",
       category: "Career Ambitions",
       image: imageField(assets.careerIndividual),
       sort_order: 6,
     },
     {
+      uid: "team-coaching-group",
       title: "Team Coaching - Group",
       description: "Improve your team's productivity, efficiency, communication and more.",
-      price_label: "$550",
-      duration: "5 hrs",
       category: "Career Ambitions",
       image: imageField(assets.teamGroup),
       sort_order: 7,
@@ -167,10 +160,12 @@ async function run() {
   ];
 
   for (let i = 0; i < servicesData.length; i++) {
+    const { uid, ...data } = servicesData[i];
     await updateDoc(
       docIds.services[i],
       `Service: ${servicesData[i].title}`,
-      servicesData[i]
+      data,
+      uid
     );
   }
 

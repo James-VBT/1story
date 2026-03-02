@@ -1,45 +1,64 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
+import * as prismic from "@prismicio/client";
+import { PrismicRichText } from "@prismicio/react";
 import { HiChevronRight } from "react-icons/hi2";
+import { createClient } from "@/prismicio";
 import ServiceImageGallery from "@/components/ServiceImageGallery";
 import { StaggerContainer, StaggerItem, FadeIn } from "@/components/animations";
 
-// ─── Static placeholder data (will be replaced with Prismic) ─────────────────
+type Props = { params: Promise<{ uid: string }> };
 
-const STATIC_SERVICE = {
-  title: "Health & Wellness Coaching",
-  category: "Personal Growth",
-  description: [
-    "Our Health & Wellness Coaching programme is designed to help you build sustainable habits that transform your daily life. Working one-on-one with your coach, you will identify the root causes of what is holding you back and create a personalised roadmap towards optimal wellbeing.",
-    "Each session focuses on real, actionable steps — whether that means improving your nutrition, establishing a consistent movement practice, managing stress, or rebuilding your energy from the ground up. Progress is tracked, celebrated, and continuously refined.",
-    "This service is suitable for anyone feeling stuck, overwhelmed, or simply ready to invest in themselves. No experience is necessary — only the commitment to show up and do the work.",
-  ],
-  images: [
-    { src: "/images/services/health-wellness.jpg",     alt: "Health & Wellness Coaching" },
-    { src: "/images/services/personal-life.jpg",       alt: "Personal Life Coaching" },
-    { src: "/images/services/career-executive.jpg",    alt: "Career Executive Coaching" },
-    { src: "/images/services/intro-consultation.jpg",  alt: "Intro Consultation" },
-    { src: "/images/services/master-finances.jpg",     alt: "Master Your Finances" },
-    { src: "/images/services/career-individual.jpg",   alt: "Career Individual Coaching" },
-  ],
-};
+// Pre-generate a route for every service document at build time
+export async function generateStaticParams() {
+  const client = createClient();
+  const services = await client.getAllByType("service");
+  return services.map((service) => ({ uid: service.uid }));
+}
 
-// ─────────────────────────────────────────────────────────────────────────────
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { uid } = await params;
+  const client = createClient();
+  const service = await client.getByUID("service", uid).catch(() => null);
+  if (!service) return { title: "Service Not Found" };
 
-export const metadata: Metadata = {
-  title: STATIC_SERVICE.title,
-  description: STATIC_SERVICE.description[0],
-};
+  return {
+    title: service.data.meta_title || service.data.title || "Service",
+    description:
+      service.data.meta_description || service.data.description || undefined,
+  };
+}
 
-export default function ServiceDetailPage() {
-  const { title, category, description, images } = STATIC_SERVICE;
+export default async function ServiceDetailPage({ params }: Props) {
+  const { uid } = await params;
+  const client = createClient();
+  const service = await client.getByUID("service", uid).catch(() => null);
+  if (!service) notFound();
+
+  const { title, category, description, body, gallery, image } = service.data;
+
+  // Build the gallery array; fall back to the card thumbnail if gallery is empty
+  const galleryImages = (gallery ?? [])
+    .map(({ image: img }) => ({
+      src: img.url ?? "",
+      alt: img.alt ?? title ?? "",
+    }))
+    .filter(({ src }) => Boolean(src));
+
+  const images =
+    galleryImages.length > 0
+      ? galleryImages
+      : image?.url
+      ? [{ src: image.url, alt: image.alt ?? title ?? "" }]
+      : [];
 
   return (
-    <main className="pt-28 pb-8 bg-white min-h-screen flex flex-col overflow-x-hidden">
+    <main className="pt-28 pb-20 bg-white min-h-screen flex flex-col overflow-x-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col flex-1">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-1.5 text-xs text-gray-medium mb-6 uppercase tracking-wider lg:tracking-widest overflow-hidden">
+        <nav className="flex items-center gap-1.5 text-xs text-gray-medium mb-8 uppercase tracking-wider overflow-hidden">
           <Link href="/" className="hover:text-teal transition-colors flex-shrink-0">Home</Link>
           <HiChevronRight size={12} className="flex-shrink-0" />
           <Link href="/book-now" className="hover:text-teal transition-colors flex-shrink-0">Services</Link>
@@ -48,25 +67,28 @@ export default function ServiceDetailPage() {
         </nav>
 
         {/* Two-column layout */}
-        <div className="grid lg:grid-cols-[55%_1fr] gap-8 lg:gap-16 items-start lg:flex-1">
+        <div className="grid lg:grid-cols-[1fr_1fr] gap-8 lg:gap-12 items-start">
 
           {/* Left — image gallery */}
-          <FadeIn direction="up" delay={0.1} className="lg:h-full">
+          <FadeIn direction="up" delay={0.1}>
             <ServiceImageGallery images={images} />
           </FadeIn>
 
           {/* Right — content */}
           <StaggerContainer className="flex flex-col">
+
             {/* Category badge */}
-            <StaggerItem>
-              <span className="inline-block text-xs font-bold uppercase tracking-[0.25em] text-teal mb-4">
-                {category}
-              </span>
-            </StaggerItem>
+            {category && (
+              <StaggerItem>
+                <span className="inline-block text-xs font-bold uppercase tracking-[0.25em] text-teal mb-4">
+                  {category}
+                </span>
+              </StaggerItem>
+            )}
 
             {/* Title */}
             <StaggerItem>
-              <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight sm:tracking-[0.05em] md:tracking-[0.1em] text-foreground leading-tight mb-6">
+              <h1 className="font-heading text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-foreground leading-tight mb-6">
                 {title}
               </h1>
             </StaggerItem>
@@ -76,14 +98,34 @@ export default function ServiceDetailPage() {
               <div className="w-12 h-0.5 bg-teal mb-6" />
             </StaggerItem>
 
-            {/* Description paragraphs */}
-            {description.map((para, i) => (
-              <StaggerItem key={i}>
+            {/* Full rich-text description, or fall back to short description */}
+            <StaggerItem>
+              {prismic.isFilled.richText(body) ? (
+                <PrismicRichText
+                  field={body}
+                  components={{
+                    paragraph: ({ children }) => (
+                      <p className="text-gray-medium text-sm leading-relaxed mb-4">
+                        {children}
+                      </p>
+                    ),
+                    strong: ({ children }) => (
+                      <strong className="font-semibold text-foreground">
+                        {children}
+                      </strong>
+                    ),
+                    em: ({ children }) => (
+                      <em className="italic">{children}</em>
+                    ),
+                  }}
+                />
+              ) : description ? (
                 <p className="text-gray-medium text-sm leading-relaxed mb-4">
-                  {para}
+                  {description}
                 </p>
-              </StaggerItem>
-            ))}
+              ) : null}
+            </StaggerItem>
+
           </StaggerContainer>
         </div>
 

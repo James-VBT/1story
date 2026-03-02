@@ -1,11 +1,24 @@
 {
   "id": "service",
   "label": "Service",
-  "format": "custom",
+  "format": "page",
   "repeatable": true,
   "status": true,
   "json": {
     "Main": {
+      "meta_title": {
+        "type": "Text",
+        "config": {
+          "label": "Meta Title",
+          "placeholder": "Health & Wellness Coaching | 1-Story"
+        }
+      },
+      "meta_description": {
+        "type": "Text",
+        "config": {
+          "label": "Meta Description"
+        }
+      },
       "title": {
         "type": "Text",
         "config": {
@@ -13,36 +26,11 @@
           "placeholder": "Health & Wellness Coaching"
         }
       },
-      "description": {
-        "type": "Text",
+      "uid": {
+        "type": "UID",
         "config": {
-          "label": "Description",
-          "placeholder": "Transform your life, one healthy habit at a time."
-        }
-      },
-      "image": {
-        "type": "Image",
-        "config": {
-          "label": "Image",
-          "constraint": {
-            "width": 800,
-            "height": 600
-          },
-          "thumbnails": []
-        }
-      },
-      "price_label": {
-        "type": "Text",
-        "config": {
-          "label": "Price Label",
-          "placeholder": "$100 or Free"
-        }
-      },
-      "duration": {
-        "type": "Text",
-        "config": {
-          "label": "Duration",
-          "placeholder": "1 hr"
+          "label": "Slug",
+          "placeholder": "health-wellness-coaching"
         }
       },
       "category": {
@@ -50,6 +38,48 @@
         "config": {
           "label": "Category",
           "options": ["Personal Growth", "Career Ambitions"]
+        }
+      },
+      "image": {
+        "type": "Image",
+        "config": {
+          "label": "Thumbnail (shown on service card)",
+          "constraint": {
+            "width": 800,
+            "height": 600
+          },
+          "thumbnails": []
+        }
+      },
+      "description": {
+        "type": "Text",
+        "config": {
+          "label": "Short Description (shown on card)",
+          "placeholder": "Transform your life, one healthy habit at a time."
+        }
+      },
+      "body": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Full Description (detail page)",
+          "multi": "paragraph,strong,em",
+          "allowTargetBlank": false
+        }
+      },
+      "gallery": {
+        "type": "Group",
+        "config": {
+          "label": "Gallery Images (detail page)",
+          "fields": {
+            "image": {
+              "type": "Image",
+              "config": {
+                "label": "Image",
+                "constraint": {},
+                "thumbnails": []
+              }
+            }
+          }
         }
       },
       "sort_order": {

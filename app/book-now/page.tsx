@@ -49,9 +49,8 @@ export default async function GalleryPage() {
                 service={{
                   title: service.data.title ?? "",
                   description: service.data.description ?? "",
-                  priceLabel: service.data.price_label ?? "",
-                  duration: service.data.duration ?? "",
                   image: service.data.image,
+                  uid: service.uid,
                 }}
               />
             </StaggerItem>

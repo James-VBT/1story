@@ -43,10 +43,10 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
 
   return (
     <>
-      <div className="flex flex-col gap-3 lg:h-full">
+      <div className="flex flex-col gap-3">
         {/* Main image — click to open lightbox */}
         <div
-          className="relative aspect-[4/3] lg:aspect-auto lg:flex-1 lg:min-h-[280px] overflow-hidden rounded-lg bg-gray-100 cursor-zoom-in"
+          className="relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-100 cursor-zoom-in"
           onClick={() => setLightboxOpen(true)}
         >
           <Image
@@ -72,13 +72,13 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
           </button>
 
           {/* Thumbnails — 4 visible on mobile (scrollable), centered on sm+ */}
-          <div className="flex-1 min-w-0 max-w-[168px] sm:max-w-none overflow-x-auto flex gap-2 sm:justify-center lg:justify-center scrollbar-hide">
+          <div className="flex-1 min-w-0 max-w-[200px] sm:max-w-none overflow-x-auto flex gap-2 sm:justify-center lg:justify-center scrollbar-hide">
             {images.map((img, i) => (
               <button
                 key={i}
                 onClick={() => setActiveIndex(i)}
                 aria-label={`View image ${i + 1}`}
-                className={`relative flex-shrink-0 w-9 h-9 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded overflow-hidden border-2 transition-all duration-200 ${
+                className={`relative flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 lg:w-16 lg:h-16 rounded overflow-hidden border-2 transition-all duration-200 ${
                   i === activeIndex
                     ? "border-teal"
                     : "border-transparent hover:border-gray-300"

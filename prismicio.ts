@@ -8,6 +8,7 @@ const routes: prismic.ClientConfig["routes"] = [
   { type: "home_page", path: "/" },
   { type: "gallery_page", path: "/book-now" },
   { type: "plans_page", path: "/plans" },
+  { type: "service", path: "/services/:uid" },
 ];
 
 export function createClient(config?: prismic.ClientConfig) {

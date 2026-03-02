@@ -1,22 +1,23 @@
 import type { ImageField } from "@prismicio/client";
+import Link from "next/link";
 import { PrismicNextImage } from "@prismicio/next";
-import { HiOutlineClock } from "react-icons/hi2";
-import Button from "./Button";
 
 interface ServiceCardProps {
   service: {
     title: string;
     description: string;
-    priceLabel: string;
-    duration: string;
     image: ImageField;
     uid?: string;
   };
 }
 
 export default function ServiceCard({ service }: ServiceCardProps) {
+  const href = service.uid ? `/services/${service.uid}` : "/book-now";
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group flex flex-col h-full">
+    <Link
+      href={href}
+      className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 group flex flex-col h-full"
+    >
       {/* Service Image */}
       <div className="aspect-[4/3] relative overflow-hidden">
         <PrismicNextImage
@@ -29,29 +30,13 @@ export default function ServiceCard({ service }: ServiceCardProps) {
 
       {/* Content */}
       <div className="p-6 flex flex-col flex-1">
-        <h3 className="font-heading uppercase tracking-wider text-sm font-bold mb-2 text-foreground">
+        <h3 className="font-heading uppercase tracking-wider text-sm font-bold mb-2 text-foreground group-hover:text-teal transition-colors">
           {service.title}
         </h3>
-        <p className="text-gray-medium text-sm mb-4 leading-relaxed">
+        <p className="text-gray-medium text-sm leading-relaxed">
           {service.description}
         </p>
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-teal font-bold text-lg">
-            {service.priceLabel}
-          </span>
-          <span className="text-gray-medium text-xs flex items-center gap-1">
-            <HiOutlineClock size={14} />
-            {service.duration}
-          </span>
-        </div>
-        <Button
-          variant="primary"
-          href={service.uid ? `/services/${service.uid}` : "/book-now"}
-          className="w-full text-xs py-2.5 mt-auto"
-        >
-          Book Now
-        </Button>
       </div>
-    </div>
+    </Link>
   );
 }
