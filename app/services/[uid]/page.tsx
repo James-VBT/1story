@@ -46,7 +46,7 @@ export default async function ServiceDetailPage({ params }: Props) {
   const images = galleryFields.length > 0 ? galleryFields : image?.url ? [image] : [];
 
   return (
-    <main className="pt-28 pb-20 bg-white min-h-screen flex flex-col overflow-x-hidden">
+    <main className="pt-28 pb-20 bg-gray-light min-h-screen flex flex-col overflow-x-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col flex-1">
 
         {/* Breadcrumb */}
