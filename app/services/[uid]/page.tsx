@@ -47,7 +47,7 @@ export default async function ServiceDetailPage({ params }: Props) {
 
   return (
     <main className="pt-28 pb-20 bg-gray-light min-h-screen flex flex-col overflow-x-hidden">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col flex-1">
+      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 flex flex-col flex-1">
 
         {/* Breadcrumb */}
         <nav className="flex items-center gap-1.5 text-xs text-gray-medium mb-8 uppercase tracking-wider overflow-hidden">
@@ -67,7 +67,7 @@ export default async function ServiceDetailPage({ params }: Props) {
           </FadeIn>
 
           {/* Right — content */}
-          <StaggerContainer className="flex flex-col">
+          <StaggerContainer className="flex flex-col min-w-0 w-full overflow-hidden">
 
             {/* Category badge */}
             {category && (
