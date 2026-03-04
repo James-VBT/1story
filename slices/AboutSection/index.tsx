@@ -29,7 +29,7 @@ export default function AboutSection({ slice }: AboutSectionProps) {
                 field={slice.primary.body_text}
                 components={{
                   paragraph: ({ children }) => (
-                    <p className="text-gray-medium leading-relaxed">
+                    <p className="text-sm text-gray-medium leading-relaxed">
                       {children}
                     </p>
                   ),
