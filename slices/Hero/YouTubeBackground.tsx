@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function extractVideoId(url: string): string | null {
   // Handles:
@@ -27,10 +27,16 @@ interface YouTubeBackgroundProps {
 }
 
 export default function YouTubeBackground({ url }: YouTubeBackgroundProps) {
+  const [show, setShow] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const videoId = extractVideoId(url);
 
-  if (!videoId) return null;
+  // Skip the iframe on mobile — YouTube's SDK is heavy and autoplay is blocked on iOS anyway
+  useEffect(() => {
+    if (window.innerWidth >= 768) setShow(true);
+  }, []);
+
+  if (!videoId || !show) return null;
 
   // YouTube embed params:
   //   autoplay=1    - auto-start

@@ -138,7 +138,6 @@ export default function ServiceImageGallery({ images }: ServiceImageGalleryProps
                 fill
                 className="object-contain"
                 sizes="90vw"
-                priority
               />
             ) : null}
           </div>

@@ -20,6 +20,7 @@ export default function Hero({ slice }: HeroProps) {
         field={slice.primary.background_image}
         fill
         className="object-cover"
+        sizes="100vw"
         priority
       />
 
