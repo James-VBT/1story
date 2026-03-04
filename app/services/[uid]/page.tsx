@@ -46,23 +46,23 @@ export default async function ServiceDetailPage({ params }: Props) {
   const images = galleryFields.length > 0 ? galleryFields : image?.url ? [image] : [];
 
   return (
-    <main className="pt-28 pb-20 bg-gray-light min-h-screen flex flex-col overflow-x-hidden">
+    <main className="pt-24 sm:pt-32 pb-14 sm:pb-20 bg-gray-light min-h-screen flex flex-col overflow-x-hidden">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 flex flex-col flex-1">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-1.5 text-xs text-gray-medium mb-8 uppercase tracking-wider overflow-hidden">
-          <Link href="/" className="hover:text-teal transition-colors flex-shrink-0">Home</Link>
-          <HiChevronRight size={12} className="flex-shrink-0" />
+        <nav className="flex items-center gap-1.5 text-xs text-gray-medium mb-5 sm:mb-8 uppercase tracking-wider overflow-hidden min-w-0">
+          <Link href="/" className="hover:text-teal transition-colors flex-shrink-0 hidden sm:inline">Home</Link>
+          <HiChevronRight size={12} className="flex-shrink-0 hidden sm:inline" />
           <Link href="/book-now" className="hover:text-teal transition-colors flex-shrink-0">Services</Link>
           <HiChevronRight size={12} className="flex-shrink-0" />
           <span className="text-foreground font-semibold truncate flex-1 min-w-0">{title}</span>
         </nav>
 
         {/* Two-column layout */}
-        <div className="grid lg:grid-cols-[1fr_1fr] gap-8 lg:gap-12 items-start">
+        <div className="grid lg:grid-cols-[1fr_1fr] gap-4 sm:gap-6 lg:gap-12 items-start">
 
           {/* Left — image gallery */}
-          <FadeIn direction="up" delay={0.1}>
+          <FadeIn direction="up" delay={0.1} className="min-w-0">
             <ServiceImageGallery images={images} />
           </FadeIn>
 
@@ -72,7 +72,7 @@ export default async function ServiceDetailPage({ params }: Props) {
             {/* Category badge */}
             {category && (
               <StaggerItem>
-                <span className="inline-block text-xs font-bold uppercase tracking-[0.25em] text-teal mb-4">
+                <span className="inline-block text-xs font-bold uppercase tracking-[0.2em] text-teal mb-2 sm:mb-4">
                   {category}
                 </span>
               </StaggerItem>
@@ -80,14 +80,14 @@ export default async function ServiceDetailPage({ params }: Props) {
 
             {/* Title */}
             <StaggerItem>
-              <h1 className="font-heading text-3xl sm:text-4xl font-extrabold uppercase tracking-tight text-foreground leading-tight mb-6">
+              <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-extrabold uppercase tracking-tight text-foreground leading-tight mb-3 sm:mb-6 break-words">
                 {title}
               </h1>
             </StaggerItem>
 
             {/* Divider */}
             <StaggerItem>
-              <div className="w-12 h-0.5 bg-teal mb-6" />
+              <div className="w-10 sm:w-12 h-0.5 bg-teal mb-3 sm:mb-6" />
             </StaggerItem>
 
             {/* Full rich-text description, or fall back to short description */}
