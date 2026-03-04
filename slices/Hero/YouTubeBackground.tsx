@@ -3,18 +3,35 @@
 import { useState, useEffect } from "react";
 import { HiPlay, HiXMark } from "react-icons/hi2";
 
-function extractVideoId(url: string): string | null {
-  const patterns = [
-    /(?:youtube\.com\/watch\?.*v=)([a-zA-Z0-9_-]{11})/,
-    /(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,
-    /(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
-    /(?:youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/,
-  ];
-  for (const pattern of patterns) {
-    const match = url.match(pattern);
-    if (match) return match[1];
-  }
+type VideoInfo = { type: "youtube" | "vimeo"; id: string };
+
+function extractVideo(url: string): VideoInfo | null {
+  const yt = url.match(
+    /(?:youtube\.com\/watch\?.*v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/
+  );
+  if (yt) return { type: "youtube", id: yt[1] };
+
+  const vimeo = url.match(/(?:vimeo\.com\/(?:video\/)?)(\d+)/);
+  if (vimeo) return { type: "vimeo", id: vimeo[1] };
+
   return null;
+}
+
+async function getThumbnailUrl(video: VideoInfo): Promise<string | null> {
+  if (video.type === "youtube") {
+    // hqdefault (480×360) is always available for every YouTube video
+    return `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
+  }
+  // Vimeo: fetch via oEmbed
+  try {
+    const res = await fetch(
+      `https://vimeo.com/api/oembed.json?url=https://vimeo.com/${video.id}`
+    );
+    const data = await res.json();
+    return data.thumbnail_url ?? null;
+  } catch {
+    return null;
+  }
 }
 
 interface YouTubeBackgroundProps {
@@ -26,14 +43,23 @@ type Mode = "pending" | "desktop" | "mobile-idle" | "mobile-playing";
 export default function YouTubeBackground({ url }: YouTubeBackgroundProps) {
   const [mode, setMode] = useState<Mode>("pending");
   const [bgLoaded, setBgLoaded] = useState(false);
-  const videoId = extractVideoId(url);
+  const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
+
+  const video = extractVideo(url);
 
   useEffect(() => {
-    // Decide after hydration so SSR is clean
-    setMode(window.innerWidth >= 768 ? "desktop" : "mobile-idle");
+    if (!video) return;
+    if (window.innerWidth >= 768) {
+      setMode("desktop");
+    } else {
+      setMode("mobile-idle");
+      // Fetch video thumbnail for the mobile preview
+      getThumbnailUrl(video).then((t) => setThumbnailUrl(t));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Lock body scroll when modal is open on mobile
+  // Lock body scroll when modal is open
   useEffect(() => {
     if (mode === "mobile-playing") {
       document.body.style.overflow = "hidden";
@@ -43,16 +69,13 @@ export default function YouTubeBackground({ url }: YouTubeBackgroundProps) {
     return () => { document.body.style.overflow = ""; };
   }, [mode]);
 
-  if (!videoId || mode === "pending") return null;
+  if (!video || mode === "pending") return null;
 
   // ─── Desktop: full-screen muted autoplay background ───────────────────────
   if (mode === "desktop") {
-    const embedSrc = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1&enablejsapi=1`;
+    const embedSrc = `https://www.youtube.com/embed/${video.id}?autoplay=1&mute=1&loop=1&playlist=${video.id}&controls=0&showinfo=0&modestbranding=1&rel=0&playsinline=1&enablejsapi=1`;
     return (
-      <div
-        className="absolute inset-0 overflow-hidden pointer-events-none"
-        aria-hidden="true"
-      >
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <iframe
           src={embedSrc}
           title="Background video"
@@ -64,23 +87,39 @@ export default function YouTubeBackground({ url }: YouTubeBackgroundProps) {
     );
   }
 
-  // ─── Mobile idle: play button over the poster image ───────────────────────
+  // ─── Mobile idle: video thumbnail + play button ────────────────────────────
   if (mode === "mobile-idle") {
     return (
-      <div className="absolute inset-0 z-10 flex items-center justify-center">
-        <button
-          onClick={() => setMode("mobile-playing")}
-          aria-label="Play video"
-          className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/60 flex items-center justify-center hover:bg-white/30 transition-colors"
-        >
-          <HiPlay className="text-white ml-1" size={28} />
-        </button>
+      <div className="absolute inset-0 z-10">
+        {/* Video thumbnail covers the Prismic poster when loaded */}
+        {thumbnailUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={thumbnailUrl}
+            alt="Video preview"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
+        {/* Play button centered */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <button
+            onClick={() => setMode("mobile-playing")}
+            aria-label="Play video"
+            className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/60 flex items-center justify-center hover:bg-white/30 transition-colors"
+          >
+            <HiPlay className="text-white ml-1" size={28} />
+          </button>
+        </div>
       </div>
     );
   }
 
   // ─── Mobile playing: fullscreen modal player ──────────────────────────────
-  const embedSrc = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+  const embedSrc =
+    video.type === "youtube"
+      ? `https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`
+      : `https://player.vimeo.com/video/${video.id}?autoplay=1`;
+
   return (
     <div
       className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
@@ -99,7 +138,7 @@ export default function YouTubeBackground({ url }: YouTubeBackgroundProps) {
       >
         <iframe
           src={embedSrc}
-          title="Service video"
+          title="Video"
           allow="autoplay; encrypted-media; fullscreen"
           allowFullScreen
           className="w-full h-full border-0"
