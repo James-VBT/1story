@@ -384,7 +384,7 @@ export type PlansPageDocument<Lang extends string = string> =
  */
 export interface ServiceDocumentDataGalleryItem {
   /**
-   * Image field in *Service → Gallery Images (detail page)*
+   * Image field in *Service → Gallery — Images & Videos (detail page)*
    *
    * - **Field Type**: Image
    * - **Placeholder**: *None*
@@ -392,6 +392,16 @@ export interface ServiceDocumentDataGalleryItem {
    * - **Documentation**: https://prismic.io/docs/fields/image
    */
   image: prismic.ImageField<never>;
+
+  /**
+   * Video URL field in *Service → Gallery — Images & Videos (detail page)*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: https://youtu.be/...
+   * - **API ID Path**: service.gallery[].video_url
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  video_url: prismic.KeyTextField;
 }
 
 /**

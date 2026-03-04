@@ -69,14 +69,21 @@
       "gallery": {
         "type": "Group",
         "config": {
-          "label": "Gallery Images (detail page)",
+          "label": "Gallery — Images & Videos (detail page)",
           "fields": {
             "image": {
               "type": "Image",
               "config": {
-                "label": "Image",
+                "label": "Image (leave empty if using a video)",
                 "constraint": {},
                 "thumbnails": []
+              }
+            },
+            "video_url": {
+              "type": "Text",
+              "config": {
+                "label": "Video URL (YouTube or Vimeo — leave empty if using an image)",
+                "placeholder": "https://youtu.be/dQw4w9WgXcQ"
               }
             }
           }

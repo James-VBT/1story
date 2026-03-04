@@ -5,7 +5,7 @@ import * as prismic from "@prismicio/client";
 import { PrismicRichText } from "@prismicio/react";
 import { HiChevronRight } from "react-icons/hi2";
 import { createClient } from "@/prismicio";
-import ServiceImageGallery from "@/components/ServiceImageGallery";
+import ServiceImageGallery, { type GalleryMediaItem } from "@/components/ServiceImageGallery";
 import { StaggerContainer, StaggerItem, FadeIn } from "@/components/animations";
 
 type Props = { params: Promise<{ uid: string }> };
@@ -38,12 +38,17 @@ export default async function ServiceDetailPage({ params }: Props) {
 
   const { title, category, description, body, gallery, image } = service.data;
 
-  // Build the gallery as ImageField[]; fall back to the card thumbnail if gallery is empty
-  const galleryFields = (gallery ?? [])
-    .map(({ image: img }) => img)
-    .filter((img) => Boolean(img.url));
+  // Build gallery items (image or video); fall back to the card thumbnail if gallery is empty
+  const galleryItems: GalleryMediaItem[] = (gallery ?? [])
+    .filter(({ image: img, video_url }) => Boolean(img?.url) || Boolean(video_url))
+    .map(({ image: img, video_url }) => ({ image: img, video_url: video_url ?? null }));
 
-  const images = galleryFields.length > 0 ? galleryFields : image?.url ? [image] : [];
+  const items: GalleryMediaItem[] =
+    galleryItems.length > 0
+      ? galleryItems
+      : image?.url
+        ? [{ image, video_url: null }]
+        : [];
 
   return (
     <main className="pt-24 sm:pt-32 pb-14 sm:pb-20 bg-gray-light min-h-screen flex flex-col overflow-x-hidden">
@@ -63,7 +68,7 @@ export default async function ServiceDetailPage({ params }: Props) {
 
           {/* Left — image gallery */}
           <FadeIn direction="up" delay={0.1} className="min-w-0">
-            <ServiceImageGallery images={images} />
+            <ServiceImageGallery items={items} />
           </FadeIn>
 
           {/* Right — content */}
